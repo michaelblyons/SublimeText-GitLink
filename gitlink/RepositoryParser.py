@@ -55,6 +55,13 @@ class RepositoryParser(object):
             self.owner = None
             self.repo_name = split_path[0]
 
+        elif self.host_type == 'azure':
+            self.domain = re.sub(r'ssh\.', '', self.domain)
+            if re.match(r'^v\d$', split_path[0]):
+                split_path = split_path[1:]
+            self.owner = split_path[0]
+            self.project = split_path[1]
+
         elif self.host_type == 'cgit':
             if re.search(r'\bsavannah\b', self.domain):
                 self.domain = re.sub(r'^(?:git\.|https\.)?git', 'cgit.git', self.domain)
@@ -105,6 +112,11 @@ class RepositoryParser(object):
                 rev = 'branch/' + revision
             elif self.rev_type == 'commithash':
                 rev = 'commit/' + revision
+
+        elif self.host_type == 'azure':
+            if self.rev_type == 'abbrev':
+                # GB for Git Branch?
+                rev = 'GB' + revision
 
         url = self.host_template['urls'][fmt_id].format(
             domain=self.domain,
