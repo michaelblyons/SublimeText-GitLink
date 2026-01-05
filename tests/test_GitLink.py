@@ -3,6 +3,7 @@ import subprocess
 
 from os import getenv
 from os.path import abspath, dirname, join as pjoin
+from typing import override
 from unittest import skipUnless
 from unittesting import DeferrableViewTestCase
 from ..gitlink.GitLink import GitlinkCommand
@@ -135,6 +136,7 @@ class GitLinkWorktreeTestCase(GitLinkTestCase):
     WORKTREE = 'Switcher-alt'
     REV = 'feature'
 
+    @override
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -147,6 +149,7 @@ class GitLinkWorktreeTestCase(GitLinkTestCase):
         cls.REPO_ORIG = super().REPO_NAME
         cls.REPO_NAME = cls.WORKTREE
 
+    @override
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
